@@ -2,28 +2,23 @@ import { h, ref } from "vue";
 
 import {
   AppstoreOutlined,
-  MailOutlined,
+  HomeOutlined,
   SettingOutlined,
 } from "@ant-design/icons-vue";
 
 export const items = ref([
   {
     key: "mail",
-    icon: () => h(MailOutlined),
-    label: "Navigation One",
-    title: "Navigation One",
+    icon: () => h(HomeOutlined),
+    label: "Home",
+    title: "Home",
+    route: "/",
   },
   {
     key: "app",
     icon: () => h(AppstoreOutlined),
-    label: "Navigation Two",
-    title: "Navigation Two",
-  },
-  {
-    key: "sub1",
-    icon: () => h(SettingOutlined),
-    label: "Navigation Three - Submenu",
-    title: "Navigation Three - Submenu",
+    label: "Products",
+    title: "Products",
     children: [
       {
         type: "group",
@@ -54,6 +49,13 @@ export const items = ref([
         ],
       },
     ],
+  },
+  {
+    key: "sub1",
+    icon: () => h(SettingOutlined),
+    label: "About",
+    title: "About",
+    route: "/about",
   },
   {
     key: "alipay",
