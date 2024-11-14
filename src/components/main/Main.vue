@@ -2,7 +2,6 @@
 import Sider from "@/components/sider/Sider.vue";
 import Footer from "@/components/footer/Footer.vue";
 import Header from "@/components/header/Header.vue";
-import HomeView from "@/views/HomeView.vue";
 </script>
 
 <template>
