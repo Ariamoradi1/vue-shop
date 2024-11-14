@@ -1,4 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useProductStore } from "@/stores/fetchData";
+import { onMounted } from "vue";
+
+const postStore = useProductStore();
+
+const { products, fetchProducts, isLoading, error } = postStore;
+
+onMounted(() => {
+  fetchProducts();
+});
+</script>
 
 <template>
   <a-layout-content :style="{ margin: '24px 16px 0' }">
