@@ -5,7 +5,7 @@ import Header from "@/components/header/Header.vue";
 </script>
 
 <template>
-  <a-layout>
+  <a-layout class="min-h-[100vh]">
     <Sider />
     <a-layout>
       <Header />

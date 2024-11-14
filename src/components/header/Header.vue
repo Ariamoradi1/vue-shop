@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+import { ref } from "vue";
+
+const selectedKeys = ref<string[]>(["4"]);
+</script>
+
 <template>
   <a-layout-header :style="{ background: '#fff', padding: 0 }">
     <div class="logo" />
@@ -13,20 +19,4 @@
   </a-layout-header>
 </template>
 
-<script lang="ts" setup>
-import { ref } from "vue";
-
-const selectedKeys = ref<string[]>(["4"]);
-</script>
-
-<style scoped>
-#components-layout-demo-responsive .logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
-}
-
-[data-theme="dark"] .site-layout-sub-header-background {
-  background: #141414;
-}
-</style>
+<style scoped></style>
