@@ -1,7 +1,14 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 
+import { aMenuItems } from "@/components/header/header.contant";
+import router from "@/router";
+
 const selectedKeys = ref<string[]>(["4"]);
+
+const handleNavigation = (route: string) => {
+  router.push({ path: route });
+};
 </script>
 
 <template>
@@ -12,9 +19,12 @@ const selectedKeys = ref<string[]>(["4"]);
       mode="horizontal"
       :style="{ lineHeight: '64px' }"
     >
-      <a-menu-item key="1">Home</a-menu-item>
-      <a-menu-item key="2">Product</a-menu-item>
-      <a-menu-item key="3">About</a-menu-item>
+      <a-menu-item
+        v-for="item in aMenuItems"
+        :key="item.key"
+        @click="handleNavigation(item.route)"
+        >{{ item.text }}</a-menu-item
+      >
     </a-menu>
   </a-layout-header>
 </template>
