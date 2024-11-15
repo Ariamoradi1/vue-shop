@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useProductStore } from "@/stores/fetchData";
-import { onMounted } from "vue";
+import { type Product, useProductStore } from "@/stores/fetchData";
+import { onMounted, ref } from "vue";
 
 const postStore = useProductStore();
 
@@ -12,6 +12,20 @@ onMounted(() => {
 
 const reloadProduct = () => {
   postStore.fetchProducts();
+};
+
+const priceDialogVisible = ref<boolean>(false);
+const successPriceDialogVisible = ref<boolean>(false);
+let selectedProduct: Product;
+
+const openPriceDialog = (product: Product) => {
+  selectedProduct = product;
+  priceDialogVisible.value = true;
+};
+
+const showSuccessBuyProduct = () => {
+  priceDialogVisible.value = false;
+  successPriceDialogVisible.value = true;
 };
 </script>
 
@@ -41,7 +55,10 @@ const reloadProduct = () => {
             <img alt="example" :src="product.image" class="w-[300] h-[200px]" />
           </template>
           <template #actions>
-            <a-button type="primary" class="w-[123px]"
+            <a-button
+              type="primary"
+              class="w-[123px]"
+              @click="openPriceDialog(product)"
               >Price {{ product.price }}$</a-button
             >
             <a-button class="w-[123px]">About Product</a-button>
@@ -60,6 +77,29 @@ const reloadProduct = () => {
         </a-card>
       </div>
     </div>
+
+    <a-modal
+      v-model:open="priceDialogVisible"
+      centered
+      @ok="showSuccessBuyProduct"
+    >
+      <template #title>
+        <p>{{ selectedProduct.title }}</p>
+      </template>
+      <p>{{ selectedProduct.category }}</p>
+      <p>Price {{ selectedProduct.price }}$</p>
+    </a-modal>
+
+    <a-modal
+      v-model:open="successPriceDialogVisible"
+      centered
+      @ok="successPriceDialogVisible = false"
+    >
+      <template #title>
+        <p>{{ selectedProduct.title }}</p>
+      </template>
+      <p>The purchase was made successfully!</p>
+    </a-modal>
   </a-layout-content>
 </template>
 
