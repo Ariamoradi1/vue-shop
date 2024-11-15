@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type Product, useProductStore } from "@/stores/fetchData";
 import { onMounted, ref } from "vue";
+import { Modal } from "ant-design-vue";
 
 const postStore = useProductStore();
 
@@ -15,7 +16,6 @@ const reloadProduct = () => {
 };
 
 const priceDialogVisible = ref<boolean>(false);
-const successPriceDialogVisible = ref<boolean>(false);
 let selectedProduct: Product;
 
 const openPriceDialog = (product: Product) => {
@@ -23,9 +23,23 @@ const openPriceDialog = (product: Product) => {
   priceDialogVisible.value = true;
 };
 
-const showSuccessBuyProduct = () => {
+const openSuccessfullyBuyDialog = () => {
+  let secondsToGo = 5;
   priceDialogVisible.value = false;
-  successPriceDialogVisible.value = true;
+  const modal = Modal.success({
+    title: `${selectedProduct.title}`,
+    content: `The purchase was made successfully!`,
+  });
+  const interval = setInterval(() => {
+    secondsToGo -= 1;
+    modal.update({
+      content: `The purchase was made successfully!`,
+    });
+  }, 1000);
+  setTimeout(() => {
+    clearInterval(interval);
+    modal.destroy();
+  }, secondsToGo * 1000);
 };
 </script>
 
@@ -81,24 +95,13 @@ const showSuccessBuyProduct = () => {
     <a-modal
       v-model:open="priceDialogVisible"
       centered
-      @ok="showSuccessBuyProduct"
+      @ok="openSuccessfullyBuyDialog"
     >
       <template #title>
         <p>{{ selectedProduct.title }}</p>
       </template>
       <p>{{ selectedProduct.category }}</p>
       <p>Price {{ selectedProduct.price }}$</p>
-    </a-modal>
-
-    <a-modal
-      v-model:open="successPriceDialogVisible"
-      centered
-      @ok="successPriceDialogVisible = false"
-    >
-      <template #title>
-        <p>{{ selectedProduct.title }}</p>
-      </template>
-      <p>The purchase was made successfully!</p>
     </a-modal>
   </a-layout-content>
 </template>
