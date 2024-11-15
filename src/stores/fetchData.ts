@@ -1,10 +1,9 @@
-// stores/usePostStore.js
 import { defineStore } from "pinia";
 
 export interface Product {
   id: number;
   title: string;
-  price: string;
+  price: number;
   category: string;
   description: string;
   image: string;
@@ -31,9 +30,9 @@ export const useProductStore = defineStore("products", {
       this.error = null;
       try {
         const response = await fetch(
-          "https://fakestoreapi.com/products?limit=5",
+          "https://fakestoreapi.com/products?limit=8",
         );
-        if (!response.ok) throw new Error("Failed to fetch posts");
+        if (!response.ok) throw new Error("Failed to fetch products");
         this.products = await response.json();
         this.loaded = true;
       } catch (err: any) {
