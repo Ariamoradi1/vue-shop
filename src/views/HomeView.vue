@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { type Product, useProductStore } from "@/stores/fetchData";
+import { type Product, useProductStore } from "@/stores/fetchProducts";
 import { onMounted, ref } from "vue";
 import { Modal } from "ant-design-vue";
 import { options } from "@/stores/options.contant";
 
-const postStore = useProductStore();
-
+const priceDialogVisible = ref<boolean>(false);
 const inputSelectValue = ref("");
+const postStore = useProductStore();
+let selectedProduct: Product;
 
 onMounted(() => {
   if (!postStore.loaded) {
@@ -17,9 +18,6 @@ onMounted(() => {
 const reloadProduct = () => {
   postStore.fetchProducts(inputSelectValue.value);
 };
-
-const priceDialogVisible = ref<boolean>(false);
-let selectedProduct: Product;
 
 const openPriceDialog = (product: Product) => {
   selectedProduct = product;
@@ -55,7 +53,7 @@ const onValueChange = (value: string) => {
   <a-layout-content :style="{ margin: '24px 16px 0' }">
     <a-select
       placeholder="Select option!"
-      style="width: 200px"
+      class="w-[200px]"
       @change="onValueChange"
     >
       <a-select-option
@@ -66,10 +64,7 @@ const onValueChange = (value: string) => {
         {{ option.option }}
       </a-select-option>
     </a-select>
-    <div
-      :style="{ padding: '24px', background: '#fff', minHeight: '200px' }"
-      class="mt-9"
-    >
+    <div class="mt-9 p-6 bg-[#fff] min-h-[200px]">
       <div v-if="postStore.isLoading">
         <div class="error-template">
           <a-spin />
@@ -82,9 +77,7 @@ const onValueChange = (value: string) => {
           <a-button type="primary" @click="reloadProduct">Try again</a-button>
         </div>
       </div>
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-      >
+      <div class="card">
         <a-card
           hoverable
           class="min-w-[300px]"
@@ -139,6 +132,10 @@ const onValueChange = (value: string) => {
 </template>
 
 <style scoped>
+.card {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4;
+}
+
 .error-template {
   @apply flex flex-col items-center py-20;
 }

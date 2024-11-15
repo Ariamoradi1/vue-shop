@@ -16,6 +16,8 @@ export interface ProductState {
   error: string | null;
 }
 
+const apiPath = "https://fakestoreapi.com/products";
+
 export const useProductStore = defineStore("products", {
   state: (): ProductState => ({
     products: [],
@@ -29,9 +31,7 @@ export const useProductStore = defineStore("products", {
       this.isLoading = true;
       this.error = null;
       try {
-        const response = await fetch(
-          `https://fakestoreapi.com/products?limit=${value}`,
-        );
+        const response = await fetch(`${apiPath}?limit=${value}`);
         if (!response.ok) throw new Error("Failed to fetch products");
         this.products = await response.json();
         this.loaded = true;
