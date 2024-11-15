@@ -58,24 +58,31 @@ const openSuccessfullyBuyDialog = () => {
           <a-button type="primary" @click="reloadProduct">Try again</a-button>
         </div>
       </div>
-      <div class="grid grid-cols-4 gap-4">
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+      >
         <a-card
           hoverable
-          style="min-width: 300px"
+          class="min-w-[300px]"
           v-for="product in postStore.products"
           :key="product.id"
         >
           <template #cover>
-            <img alt="example" :src="product.image" class="w-[300] h-[200px]" />
+            <img
+              alt="example"
+              :src="product.image"
+              class="h-[200px] w-full object-cover"
+            />
           </template>
           <template #actions>
             <a-button
               type="primary"
-              class="w-[123px]"
+              class="mb-2 md:mb-0"
               @click="openPriceDialog(product)"
-              >Price {{ product.price }}$</a-button
             >
-            <a-button class="w-[123px]">About Product</a-button>
+              Price {{ product.price }}$
+            </a-button>
+            <a-button>About Product</a-button>
           </template>
           <a-card-meta>
             <template #title>
