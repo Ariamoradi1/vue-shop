@@ -4,27 +4,24 @@ import { onMounted } from "vue";
 
 const postStore = useProductStore();
 
-const { products, fetchProducts, isLoading, error, loaded } = postStore;
-
 onMounted(() => {
-  if (!loaded) {
-    fetchProducts();
+  if (!postStore.loaded) {
+    postStore.fetchProducts();
   }
-  console.log(products);
 });
 
 const reloadProduct = () => {
-  fetchProducts();
+  postStore.fetchProducts();
 };
 </script>
 
 <template>
   <a-layout-content :style="{ margin: '24px 16px 0' }">
     <div :style="{ padding: '24px', background: '#fff', minHeight: '600px' }">
-      <div v-if="isLoading">
+      <div v-if="postStore.isLoading">
         <a-spin />
       </div>
-      <div v-else-if="error">
+      <div v-else-if="postStore.error">
         <h2>Please try again...</h2>
         <a-button type="primary" @click="reloadProduct">Try again</a-button>
       </div>
@@ -32,7 +29,7 @@ const reloadProduct = () => {
         <a-card
           hoverable
           style="min-width: 300px; min-height: 200px"
-          v-for="product in products"
+          v-for="product in postStore.products"
           :key="product.id"
         >
           <template #cover>
