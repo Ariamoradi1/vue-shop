@@ -25,12 +25,12 @@ export const useProductStore = defineStore("products", {
   }),
 
   actions: {
-    async fetchProducts() {
+    async fetchProducts(value: string) {
       this.isLoading = true;
       this.error = null;
       try {
         const response = await fetch(
-          "https://fakestoreapi.com/products?limit=8",
+          `https://fakestoreapi.com/products?limit=${value}`,
         );
         if (!response.ok) throw new Error("Failed to fetch products");
         this.products = await response.json();

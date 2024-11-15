@@ -2,17 +2,20 @@
 import { type Product, useProductStore } from "@/stores/fetchData";
 import { onMounted, ref } from "vue";
 import { Modal } from "ant-design-vue";
+import { options } from "@/stores/options.contant";
 
 const postStore = useProductStore();
 
+const inputSelectValue = ref("");
+
 onMounted(() => {
   if (!postStore.loaded) {
-    postStore.fetchProducts();
+    postStore.fetchProducts("8");
   }
 });
 
 const reloadProduct = () => {
-  postStore.fetchProducts();
+  postStore.fetchProducts(inputSelectValue.value);
 };
 
 const priceDialogVisible = ref<boolean>(false);
@@ -41,11 +44,32 @@ const openSuccessfullyBuyDialog = () => {
     modal.destroy();
   }, secondsToGo * 1000);
 };
+
+const onValueChange = (value: string) => {
+  inputSelectValue.value = value;
+  postStore.fetchProducts(value);
+};
 </script>
 
 <template>
   <a-layout-content :style="{ margin: '24px 16px 0' }">
-    <div :style="{ padding: '24px', background: '#fff', minHeight: '200px' }">
+    <a-select
+      placeholder="Select option!"
+      style="width: 200px"
+      @change="onValueChange"
+    >
+      <a-select-option
+        v-for="option in options"
+        :key="option.option"
+        :value="option.option"
+      >
+        {{ option.option }}
+      </a-select-option>
+    </a-select>
+    <div
+      :style="{ padding: '24px', background: '#fff', minHeight: '200px' }"
+      class="mt-9"
+    >
       <div v-if="postStore.isLoading">
         <div class="error-template">
           <a-spin />
