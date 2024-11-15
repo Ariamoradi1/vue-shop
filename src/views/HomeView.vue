@@ -127,6 +127,7 @@ const onValueChange = (value: string) => {
       v-model:open="priceDialogVisible"
       centered
       @ok="openSuccessfullyBuyDialog"
+      ok-text="Buy"
     >
       <template #title>
         <p>{{ selectedProduct.title }}</p>
