@@ -8,17 +8,28 @@ interface Information {
   id: number;
 }
 const information = ref<Information[]>([]);
+const image = ref<string>("");
 onMounted(() => {
   fetch("http://localhost:8080/api/v1/information")
     .then((res) => res.json())
     .then((data) => {
       information.value = data;
     });
+
+  fetch("http://localhost:8080/api/v1/image")
+    .then((res) => res.text())
+    .then((blob) => {
+      image.value = blob;
+    });
 });
 </script>
 <template>
   <a-layout-content :style="{ margin: '24px 16px 0' }">
-    <div :style="{ padding: '24px', background: '#fff', minHeight: '600px' }">
+    <div
+      :style="{ padding: '24px', background: '#fff', minHeight: '600px' }"
+      class="flex flex-col items-center justify-center"
+    >
+      <img :src="image" alt="" class="rounded-lg w-[400px] h-[400px]" />
       <ul>
         <li>name: {{ information[0]?.name }}</li>
         <li>family: {{ information[0]?.family }}</li>
