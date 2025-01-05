@@ -3,6 +3,7 @@ import { type Product, useProductStore } from "@/stores/fetchProducts";
 import { onMounted, ref } from "vue";
 import { Modal } from "ant-design-vue";
 import { options } from "@/stores/options.contant";
+import router from "@/router";
 
 const priceDialogVisible = ref<boolean>(false);
 const inputSelectValue = ref("");
@@ -46,6 +47,10 @@ const openSuccessfullyBuyDialog = () => {
 const onValueChange = (value: string) => {
   inputSelectValue.value = value;
   postStore.fetchProducts(value);
+};
+
+const navigateToAboutProduct = (id: number) => {
+  router.push({ path: "/product", query: { productId: id } });
 };
 </script>
 
@@ -99,7 +104,9 @@ const onValueChange = (value: string) => {
             >
               Price {{ product.price }}$
             </a-button>
-            <a-button>About Product</a-button>
+            <a-button @click="navigateToAboutProduct(product.id)"
+              >About Product</a-button
+            >
           </template>
           <a-card-meta>
             <template #title>
