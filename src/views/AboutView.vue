@@ -1,31 +1,29 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-interface Information {
-  name: string;
-  family: string;
-  email: string;
-  age: number;
-  id: number;
-}
 
-interface ImageResponse {
-  image: string;
-}
 const information = ref<Information[]>([]);
 const image = ref<ImageResponse | null>(null);
-onMounted(() => {
-  fetch("http://localhost:8080/api/v1/information")
-    .then((res) => res.json())
-    .then((data) => {
-      information.value = data;
-    });
 
-  fetch("http://localhost:8080/api/v1/image")
-    .then((res) => res.json())
-    .then((res) => {
-      console.log(res);
-      image.value = res;
-    });
+const fetchData = async (url: string) => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch data from ${url}`);
+  }
+  return response.json();
+};
+
+onMounted(async () => {
+  try {
+    const [infoData, imageData] = await Promise.all([
+      fetchData("http://localhost:8080/api/v1/information"),
+      fetchData("http://localhost:8080/api/v1/image"),
+    ]);
+
+    information.value = infoData;
+    image.value = imageData;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 });
 </script>
 <template>
