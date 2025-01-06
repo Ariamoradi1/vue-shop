@@ -2,10 +2,11 @@
 import { useRoute } from "vue-router";
 import { useProductStore } from "@/stores/fetchProducts";
 import router from "@/router";
-import { Modal } from "ant-design-vue";
 import { ref } from "vue";
+import { useModal } from "@/composables/success-modal/success-modal";
 
 const priceDialogVisible = ref<boolean>(false);
+const { showSuccessDialog } = useModal();
 const $route = useRoute();
 const postStore = useProductStore();
 const id = $route.query.productId;
@@ -18,22 +19,12 @@ if (!selectedProduct) {
 }
 
 const openSuccessfullyBuyDialog = () => {
-  let secondsToGo = 5;
   priceDialogVisible.value = false;
-  const modal = Modal.success({
-    title: `${selectedProduct?.title}`,
-    content: `The purchase was made successfully!`,
+  showSuccessDialog({
+    title: selectedProduct?.title ?? "",
+    content: "The purchase was made successfully!",
+    duration: 5,
   });
-  const interval = setInterval(() => {
-    secondsToGo -= 1;
-    modal.update({
-      content: `The purchase was made successfully!`,
-    });
-  }, 1000);
-  setTimeout(() => {
-    clearInterval(interval);
-    modal.destroy();
-  }, secondsToGo * 1000);
 };
 </script>
 

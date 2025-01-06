@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { type Product, useProductStore } from "@/stores/fetchProducts";
+import { useProductStore } from "@/stores/fetchProducts";
+import type { Product } from "@/model/product/product.model";
 import { onMounted, ref } from "vue";
-import { Modal } from "ant-design-vue";
 import { options } from "@/stores/options.contant";
 import router from "@/router";
+import { useModal } from "@/composables/success-modal/success-modal";
 
 const priceDialogVisible = ref<boolean>(false);
 const inputSelectValue = ref("");
+const { showSuccessDialog } = useModal();
 const postStore = useProductStore();
 let selectedProduct: Product;
 
@@ -26,22 +28,12 @@ const openPriceDialog = (product: Product) => {
 };
 
 const openSuccessfullyBuyDialog = () => {
-  let secondsToGo = 5;
   priceDialogVisible.value = false;
-  const modal = Modal.success({
-    title: `${selectedProduct.title}`,
-    content: `The purchase was made successfully!`,
+  showSuccessDialog({
+    title: selectedProduct.title,
+    content: "The purchase was made successfully!",
+    duration: 5,
   });
-  const interval = setInterval(() => {
-    secondsToGo -= 1;
-    modal.update({
-      content: `The purchase was made successfully!`,
-    });
-  }, 1000);
-  setTimeout(() => {
-    clearInterval(interval);
-    modal.destroy();
-  }, secondsToGo * 1000);
 };
 
 const onValueChange = (value: string) => {
